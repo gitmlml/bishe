@@ -4,7 +4,7 @@
       <a-input v-model:value="params.adminname" placeholder="请输入账号" style="width:300px"/>
       <a-button type="primary" style="margin-left:10px" @click="findBySearch()">查询</a-button>
       <a-button type="primary" style="margin-left:10px" @click="reset()">重置</a-button>
-      <a-button type="primary" style="margin-left:10px" @click="visible = true">+ 增加</a-button>
+      <a-button type="primary" style="margin-left:10px" @click="visible = true">- 增加</a-button>
         <a-modal
           v-model:visible="visible"
           title="Create a new collection"
