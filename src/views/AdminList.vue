@@ -4,10 +4,10 @@
       <a-input v-model:value="params.adminname" placeholder="请输入账号" style="width:300px"/>
       <a-button type="primary" style="margin-left:10px" @click="findBySearch()">查询</a-button>
       <a-button type="primary" style="margin-left:10px" @click="reset()">重置</a-button>
-      <a-button type="primary" style="margin-left:10px" @click="visible = true">- 增加</a-button>
+      <a-button type="primary" style="margin-left:10px" @click="visible = true">+ 增加</a-button>
         <a-modal
           v-model:visible="visible"
-          title="Create a new collection"
+          title="添加管理员"
           ok-text="添加"
           cancel-text="取消"
           @ok="onOk"
@@ -20,10 +20,12 @@
             >
               <a-input v-model:value="formState.adminname" />
             </a-form-item>
-            <a-form-item name="name" label="管理员姓名">
+            <a-form-item name="name" label="管理员姓名"
+            :rules="[{ required: true, message: '请输入姓名！' }]">
               <a-input v-model:value="formState.name" />
             </a-form-item>
-            <a-form-item name="adminpassword" label="密码">
+            <a-form-item name="adminpassword" label="密码"
+            :rules="[{ required: true, message: '请输入密码！' }]">
               <a-input v-model:value="formState.adminpassword" />
             </a-form-item>
           </a-form>
@@ -75,8 +77,8 @@ const columns = [
   },
   {
     title: '密码',
-    dataIndex: 'adminpasswprd',
-    key: 'adminpasswprd'
+    dataIndex: 'adminpassword',
+    key: 'adminpassword'
   },
   {
     title: '操作',
@@ -117,6 +119,19 @@ export default defineComponent({
       formRef.value.validateFields().then(values => {
         console.log('Received values of form: ', values)
         console.log('formState: ', toRaw(formState))
+        // 添加管理员
+        request.post('/admin/saveAdmin', {
+          adminname: formState.adminname,
+          name: formState.name,
+          adminpassword: formState.adminpassword
+        }).then(res => {
+          if (res.code === '0') {
+            console.log('管理员添加成功')
+          // eslint-disable-next-line no-empty
+          } else {
+
+          }
+        })
         visible.value = false
         formRef.value.resetFields()
         console.log('reset formState: ', toRaw(formState))
@@ -146,6 +161,7 @@ export default defineComponent({
   },
   // 定义页面上控件发出的事件调用的方法
   methods: {
+
     // 调后台接口查询管理员信息
     load () {
       request.get('/admin').then(res => {
@@ -157,9 +173,7 @@ export default defineComponent({
         } else {
 
         }
-      }
-
-      )
+      })
     },
 
     // 根据账号查询管理员
