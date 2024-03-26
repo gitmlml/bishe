@@ -5,15 +5,19 @@ import PersonalCenter from '../views/PersonalCenter'
 import MyWork from '../views/MyWork'
 import PerUplode from '../views/PerUplode'
 import WordLibrary from '../views/WordLibrary'
-import PicLibrary from '../views/PicLibrary'
+import ArticleOne from '../views/ArticleOne'
 import SignIn from '../views/SignIn'
 import RegisTer from '../views/RegisTer'
 import DesignCenter from '../views/DesignCenter'
 import ShowWork from '../views/ShowWork'
-import UserList from '../views/UserList'
 import LoginRegister from '../views/LoginRegister'
 import AdminSystem from '../views/AdminSystem'
 import AdminList from '../views/AdminList'
+import UserList from '../views/UserList'
+import CssTest from '../views/CssTest'
+// import JsTest from '../views/JsTest'
+import CssTesttow from '../views/CssTesttow'
+import ArticleCollect from '../views/ArticleCollect'
 
 const routes = [
   {
@@ -28,11 +32,6 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  },
-  {
-    path: '/PersonalCenter',
-    name: 'PersonalCenter',
-    component: PersonalCenter
   },
   {
     path: '/Mywork',
@@ -50,9 +49,9 @@ const routes = [
     component: WordLibrary
   },
   {
-    path: '/PicLibrary',
-    name: 'PiclLibrary',
-    component: PicLibrary
+    path: '/ArticleOne',
+    name: 'ArticleOne',
+    component: ArticleOne
   },
   {
     path: '/SignIn',
@@ -85,6 +84,21 @@ const routes = [
     component: LoginRegister
   },
   {
+    path: '/CssTest',
+    name: '/CssTest',
+    component: CssTest
+  },
+  {
+    path: '/CssTesttow',
+    name: '/CssTesttow',
+    component: CssTesttow
+  },
+  // {
+  //   path: '/JsTest',
+  //   name: '/JsTest',
+  //   component: JsTest
+  // },
+  {
     path: '/AdminSystem',
     name: 'AdminSystem',
     component: AdminSystem,
@@ -101,6 +115,18 @@ const routes = [
         path: '/UserList',
         name: 'UserList',
         component: UserList
+      }
+    ]
+  },
+  {
+    path: '/PersonalCenter',
+    name: 'PersonalCenter',
+    component: PersonalCenter,
+    children: [
+      {
+        path: '/ArticleCollect',
+        name: '/ArticleCollect',
+        component: ArticleCollect
       }
     ]
   }

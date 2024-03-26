@@ -5,6 +5,7 @@
       <a-button type="primary" style="margin-left:10px" @click="findBySearch()">查询</a-button>
       <a-button type="primary" style="margin-left:10px" @click="reset()">重置</a-button>
       <a-button type="primary" style="margin-left:10px" @click="visible = true">+ 增加</a-button>
+      <!-- 添加管理员 -->
         <a-modal
           v-model:visible="visible"
           title="添加管理员"
@@ -24,9 +25,9 @@
             :rules="[{ required: true, message: '请输入姓名！' }]">
               <a-input v-model:value="formState.name" />
             </a-form-item>
-            <a-form-item name="adminpassword" label="密码"
-            :rules="[{ required: true, message: '请输入密码！' }]">
-              <a-input v-model:value="formState.adminpassword" />
+            <a-form-item name="adminphone" label="联系方式"
+            :rules="[{ required: true, message: '请输入联系方式！' }]">
+              <a-input v-model:value="formState.adminphone" />
             </a-form-item>
           </a-form>
         </a-modal>
@@ -52,7 +53,7 @@
             <span>
               <a-button type="primary">编辑</a-button>
               <a-divider type="vertical" />
-              <a-button type="primary" danger>删除</a-button>
+              <a-button type="primary" danger @click="showDeleteConfirm">删除</a-button>
             </span>
           </template>
         </template>
@@ -61,9 +62,12 @@
   </div>
 </template>
 <script>
-import { defineComponent, ref, reactive, toRaw } from 'vue'
+import { defineComponent, ref, reactive, toRaw, createVNode } from 'vue'
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
+import { Modal } from 'ant-design-vue'
 import request from '../api/request'
 
+// table 列
 const columns = [
   {
     name: 'AdminName',
@@ -76,9 +80,9 @@ const columns = [
     key: 'name'
   },
   {
-    title: '密码',
-    dataIndex: 'adminpassword',
-    key: 'adminpassword'
+    title: '联系方式',
+    dataIndex: 'adminphone',
+    key: 'adminphone'
   },
   {
     title: '操作',
@@ -98,62 +102,6 @@ export default defineComponent({
   },
   components: {
 
-  },
-  setup () {
-    const size = ref('default')
-
-    const onChange = e => {
-      console.log('size checked', e.target.value)
-      size.value = e.target.value
-    }
-    const current = ref(['mail'])
-
-    const formRef = ref()
-    const visible = ref(false)
-    const formState = reactive({
-      adminname: '',
-      name: '',
-      adminpassword: ''
-    })
-    const onOk = () => {
-      formRef.value.validateFields().then(values => {
-        console.log('Received values of form: ', values)
-        console.log('formState: ', toRaw(formState))
-        // 添加管理员
-        request.post('/admin/saveAdmin', {
-          adminname: formState.adminname,
-          name: formState.name,
-          adminpassword: formState.adminpassword
-        }).then(res => {
-          if (res.code === '0') {
-            console.log('管理员添加成功')
-          // eslint-disable-next-line no-empty
-          } else {
-
-          }
-        })
-        visible.value = false
-        formRef.value.resetFields()
-        console.log('reset formState: ', toRaw(formState))
-      }).catch(info => {
-        console.log('Validate Failed:', info)
-      })
-    }
-
-    return {
-      selectedKeys: ref(['1']),
-      collapsed: ref(false),
-      size,
-      onChange,
-      current,
-      // new
-      columns,
-      formState,
-      formRef,
-      visible,
-      onOk
-
-    }
   },
   // 页面在创建时需要做的事
   created () {
@@ -200,6 +148,84 @@ export default defineComponent({
         adminname: ''
       }
       this.findBySearch()
+    }
+  },
+
+  setup () {
+    const size = ref('default')
+
+    const onChange = e => {
+      console.log('size checked', e.target.value)
+      size.value = e.target.value
+    }
+    const current = ref(['mail'])
+
+    // 提交添加管理员表单
+    const formRef = ref()
+    const visible = ref(false)
+    const formState = reactive({
+      adminname: '',
+      name: '',
+      adminphone: ''
+    })
+    const onOk = () => {
+      formRef.value.validateFields().then(values => {
+        console.log('Received values of form: ', values)
+        console.log('formState: ', toRaw(formState))
+        // 添加管理员
+        request.post('/admin/saveAdmin', {
+          adminname: formState.adminname,
+          name: formState.name,
+          adminphone: formState.adminphone
+        }).then(res => {
+          if (res.code === '0') {
+            console.log('管理员添加成功')
+            // findBySearch()
+          // eslint-disable-next-line no-empty
+          } else {
+
+          }
+        })
+        visible.value = false
+        formRef.value.resetFields()
+        console.log('reset formState: ', toRaw(formState))
+      }).catch(info => {
+        console.log('Validate Failed:', info)
+      })
+    }
+
+    // 删除管理员信息
+    const showDeleteConfirm = () => {
+      Modal.confirm({
+        title: '确定删除此管理员信息？',
+        icon: createVNode(ExclamationCircleOutlined),
+        content: '删除后不可取消',
+        okText: '确定',
+        okType: 'danger',
+        cancelText: '取消',
+        onOk () {
+          console.log('OK')
+        },
+        onCancel () {
+          console.log('Cancel')
+        }
+      })
+    }
+
+    return {
+      selectedKeys: ref(['1']),
+      collapsed: ref(false),
+      size,
+      onChange,
+      current,
+      // new
+      columns,
+      formState,
+      formRef,
+      visible,
+      onOk,
+      showDeleteConfirm
+
     }
   }
 

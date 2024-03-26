@@ -185,7 +185,7 @@ export default defineComponent({
 .first{
   align-items: center;
   background-color: var(--white);
-  background: url("../assets/img/signup/bg2.jpg");
+  background: url("../assets/img/signup/bg3.jpg");
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -266,8 +266,8 @@ export default defineComponent({
 }
 
 .overlay {
-  background-color: #5e5e5f;
-  background: url("../assets/img/signup/bg2.jpg");
+  background-color: #ffffff;
+  background: url("../assets/img/signup/bg3.jpg");
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -343,7 +343,7 @@ export default defineComponent({
 }
 
 .form {
-  background-color: #e9e9e9;
+  background-color: #f6f6f6;
   display: flex;
   align-items: center;
   justify-content: center;
